@@ -88,10 +88,14 @@ Kiro left its free-during-preview phase at GA and now uses a **credit-based** mo
 of work: a simple prompt can cost **less than 1 credit** (billed in 0.01 increments), while a complex
 action like executing a spec task typically costs more.
 
-> ℹ️ **History worth teaching:** Kiro originally metered usage as separate **"vibe requests"** (one chat
-> interaction) and **"spec requests"** (executing one spec task), where spec requests cost more. After
-> community feedback this was **unified into a single credit pool** that charges fractionally by
-> complexity — simpler and more predictable.
+> ℹ️ **History worth teaching (and a good story for a talk):** Kiro's *launch* pricing in **August 2025**
+> went badly — a rollout **bug made some tasks consume multiple requests**, draining people's limits. AWS
+> [acknowledged the bug, apologized, and issued refunds](https://kiro.dev/blog/important-pricing-updates/)
+> (the tech press was unkind — *The Register* called it a "wallet-wrecking tragedy"). AWS then **rebuilt
+> pricing twice**: on **Sep 15, 2025** it replaced the old separate **"vibe requests"** (a chat
+> interaction) and **"spec requests"** (executing a spec task) with a **single, fractional credit pool**
+> (charged by complexity, metered to 0.01); later it added the **Pro Max** tier to fill the gap between
+> Pro+ and Power. Lesson: even big platforms ship pricing wrong — what matters is the fix.
 
 | Plan | Price / month | Monthly credits |
 |---|---|---|
@@ -104,6 +108,8 @@ action like executing a spec task typically costs more.
 - **Overage** (paid plans only, opt-in): **$0.04 per extra credit**, billed at month-end.
 - New individual subscribers get a sign-up bonus (e.g. **$20 credit** on first upgrade / bonus credits).
 - **AWS GovCloud (US)** pricing is ~20% higher and has **no Free tier**.
+- **Model choice affects credit burn:** the default **"Auto"** agent is cheapest; pinning a single
+  frontier model costs more (e.g. forcing Sonnet-only runs ~1.3× the credits of the same task on Auto).
 
 > Pricing evolves — always confirm current numbers at **[kiro.dev/pricing](https://kiro.dev/pricing/)**.
 
@@ -232,7 +238,8 @@ This provides context from all three spec files to guide implementation.
 ### 2. Agent Hooks (Event-Driven Automation)
 
 Kiro can automate repetitive tasks via hooks. As of 2026 you can describe a hook in **natural language**
-and Kiro wires it up, including **pre/post tool-use** triggers.
+and Kiro wires it up. A hook's action can be an **agent prompt ("Ask Kiro")** *or* a plain **shell
+command** — shell-command hooks feed their output back into context and **do not consume credits**.
 
 **Example Hook: Documentation Sync**
 ```
@@ -813,7 +820,9 @@ This repo doubles as a teaching kit about Kiro:
 - FAQ: <https://kiro.dev/faq/>
 - Kiro Web (preview): <https://app.kiro.dev>
 - General availability announcement (Nov 17, 2025): <https://kiro.dev/blog/general-availability/>
-- Pricing & "Auto" agent announcement: <https://kiro.dev/blog/new-pricing-plans-and-auto/>
+- Pricing & "Auto" agent announcement (Sep 15, 2025): <https://kiro.dev/blog/new-pricing-plans-and-auto/>
+- The Aug 2025 pricing-bug apology + refunds: <https://kiro.dev/blog/important-pricing-updates/>
+- Pro Max tier announcement: <https://kiro.dev/blog/kiro-pro-max/>
 
 **MateMate Project Files** (the spec-driven case study this contract was written for):
 - `/SDD/KiroForHumans.md` – User guide for Kiro

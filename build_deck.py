@@ -322,10 +322,12 @@ for plan, price, cr, col in rows:
     text(s, 5.1, y, 2.7, 0.56, [[(price, 15, INK)]], anchor=MSO_ANCHOR.MIDDLE)
     text(s, 8.2, y, 3.8, 0.56, [[(cr, 15, INK)]], anchor=MSO_ANCHOR.MIDDLE)
     y += 0.63
-text(s, 0.7, 6.55, 11.9, 0.5, [
-    [("👉 Zum Ausprobieren reicht ", 13, GREEN, True), ("Free", 13, GREEN, True),
-     (" (Social-Login / AWS Builder ID — kein Kreditkarten-Konto nötig). Overage: $0,04 / Credit. Preise: kiro.dev/pricing", 13, MUTE)],
-])
+text(s, 0.7, 6.34, 11.9, 0.9, [
+    [("👉 Zum Ausprobieren reicht ", 12.5, GREEN, True), ("Free", 12.5, GREEN, True),
+     (" (Social-Login / AWS Builder ID — kein Kreditkarten-Konto nötig). Overage: $0,04 / Credit.", 12.5, MUTE)],
+    [("😬 Story: Der Preis-Start 2025 ging schief (Bug zog zu viele Credits ab) → AWS entschuldigte sich, "
+      "erstattete zurück & baute das Modell neu.", 12.5, AMBER)],
+], line_spacing=1.05, space_after=4)
 
 # ==================================================================== SLIDE 9
 s = slide()

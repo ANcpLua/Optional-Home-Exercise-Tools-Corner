@@ -101,6 +101,13 @@ Kiro rechnet mit **Credits** (1 Credit = ein Stück Arbeit; einfache Sachen kost
 > Zum Ausprobieren reicht der **Free-Plan** (Anmeldung mit Social-Login oder AWS Builder ID — **kein**
 > Amazon-Konto mit Kreditkarte nötig). Aktuelle Preise: [kiro.dev/pricing](https://kiro.dev/pricing/).
 
+### 😬 Kleine Drama-Story (gut zum Erzählen!)
+
+Als Kiro 2025 die Preise einführte, ging es **schief**: ein **Bug** zog manchen Leuten viel zu viele
+Credits ab. AWS hat sich **entschuldigt**, das Geld **zurückerstattet** und das Preismodell danach **zweimal
+neu gebaut** — vom alten „vibe/spec request"-System hin zum heutigen **Credit-Pool**. Lektion: Selbst
+riesige Firmen machen Fehler — **wichtig ist, wie man sie behebt.**
+
 ---
 
 ## 🛠️ In 5 Schritten selbst ausprobieren
