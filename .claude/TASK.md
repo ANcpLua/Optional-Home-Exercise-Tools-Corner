@@ -13,15 +13,24 @@ July 2025 public preview). Alexander needs to **present it to teenagers/students
    `Kiro_IDE_Orchestrator_NEW_FH.pptx`).
 
 ## Plan / checklist
-- [ ] **Research** current Kiro state via `/deep-research` (cited report) — GA, pricing, features, workflow, adoption.
-- [ ] Verify research findings against official kiro.dev docs/changelog before writing.
-- [ ] Update `README.md` to current reality (correct dates, pricing, features; keep the SDD pedagogy).
-- [ ] Add a teenager-friendly explainer (plain language, why-it-matters, demo path).
-- [ ] Build the updated PowerPoint deck for the youth presentation.
-- [ ] Commit incrementally, push, open PR (public repo → drive to merge once green).
+- [x] **Research** current Kiro state via `/deep-research` + primary sources (kiro.dev) — GA, pricing, features.
+- [x] Verify findings against official kiro.dev docs/changelog/GA blog (adversarial deep-research run corroborated).
+- [x] Update `README.md` to current reality (GA Nov 17 2025, IDE 1.0 Jun 25 2026, credit pricing, CLI/Web,
+      subagents/parallel, Auto model agent, MCP governance, fixed dead changelog link; SDD pedagogy preserved).
+- [x] Add teenager-friendly explainer — `Kiro-fuer-Jugendliche.md` (bilingual DE/EN).
+- [x] Build the youth presentation deck — `Kiro_IDE_Orchestrator_2026_Jugend.pptx` (11 slides, reproducible via `build_deck.py`).
+- [ ] Commit deck, push, open PR (public repo → drive to merge once green).
 
 ## Status
-STARTED 2026-06-26 — branch `claude/refresh-kiro-2026`. Research phase next.
+DONE (content) 2026-06-26 — branch `claude/refresh-kiro-2026`. Opening PR to merge.
+
+## Key verified facts (June 2026)
+- Preview 2025-07-14 → **GA 2025-11-17** → latest **IDE 1.0 (2026-06-25)**. 250k+ devs in preview.
+- Now: Kiro **IDE + CLI + Web** (app.kiro.dev). Built on Code OSS, powered by Amazon Bedrock; "Auto" model agent.
+- Credit pricing: Free $0/50, Pro $20/1k, Pro+ $40/2k, Pro Max $100/5k, Power $200/10k; $0.04 overage.
+- Subagents + concurrent spec tasks = parallel (old "one task at a time" limit gone). Web search in chat.
+- SSO: AWS IAM Identity Center + Okta + Microsoft Entra ID. MCP registry governance for enterprise.
+- Changelog moved: kiro.dev/docs/changelog (404) → kiro.dev/changelog/ide.
 
 ## Resume notes
 - Repo files: `README.md` (750 lines), two `.pptx`, one `.png`. No source code — pure teaching material.
