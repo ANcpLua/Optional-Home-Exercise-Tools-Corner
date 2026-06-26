@@ -1,8 +1,32 @@
-# Kiro: Spec-Driven Development Tool for AI Agents
+# Kiro: Spec-Driven Development with an Agentic IDE
 
-**Audience:** AI Agents (Claude Code, Kiro agents, other AI assistants)
+> **Teaching & reference resource** for [AWS Kiro](https://kiro.dev/) — the agentic, spec-driven
+> development environment. Written so two audiences can use it:
+>
+> - **People** (students, teenagers, new developers) learning *what* Kiro is and *why* spec-driven
+>   development matters — start with **["What Kiro Is"](#what-kiro-is)** and
+>   **[`Kiro-fuer-Jugendliche.md`](Kiro-fuer-Jugendliche.md)** (bilingual DE/EN companion to the slides).
+> - **AI agents** (Claude Code, Kiro agents, other assistants) being told *how* to consume Kiro's
+>   spec outputs — read **["How to Use Kiro Specs"](#how-to-use-kiro-specs-in-your-workflow)** onward as a contract.
 
-**Key Contract:** This file describes what Kiro is, how it works, and how you should use its outputs when developing software.
+---
+
+## ⏱️ What changed since this was first written (Nov 2025 → Jun 2026)
+
+This material originally described Kiro at its **July 2025 public preview**. Kiro moved fast. If you saw
+an older version of this repo or deck, these are the facts that are now different:
+
+| Topic | Old (2025) | Now (June 2026) |
+|---|---|---|
+| **Status** | Public preview (since **July 14, 2025**) | **Generally available** since **November 17, 2025**; current release is **IDE 1.0 (June 25, 2026)** |
+| **Surface** | Graphical IDE only ("not a CLI tool") | IDE **+ Kiro CLI** (terminal agents) **+ Kiro Web** preview at [app.kiro.dev](https://app.kiro.dev) |
+| **Pricing** | Free during preview | **Credit-based** plans: Free, Pro, Pro+, Pro Max, Power (see [Pricing](#-pricing-current-as-of-june-2026)) |
+| **Parallelism** | One task at a time | **Subagents** + **concurrent spec-task execution** run work in parallel |
+| **Models** | Claude (single model) | **"Auto"** multi-model agent + choice of Claude Sonnet 4.5/4.6, Opus 4.5–4.8, Haiku 4.5, and open-weight models |
+| **Team / SSO** | Individual only | Team plans via **AWS IAM Identity Center**, plus **Okta** and **Microsoft Entra ID** (SCIM) |
+| **Changelog URL** | `kiro.dev/docs/changelog` (now 404) | [`kiro.dev/changelog/ide`](https://kiro.dev/changelog/ide/) |
+
+*See [Resources](#resources) for the primary sources behind every claim above.*
 
 ---
 
@@ -23,12 +47,15 @@ Without these files, you have no ground truth. Stop and ask for them.
 
 ### Core Identity
 
-**Kiro is an agentic IDE developed by AWS** that transforms natural language prompts into structured specifications before code generation.
+**Kiro is an agentic development environment from AWS** that transforms natural-language prompts into
+structured specifications *before* it generates code.
 
-- **Platform:** AI-powered Integrated Development Environment (IDE)
-- **Foundation:** Built on Code OSS (VS Code open source)
+- **Platform:** AI-powered IDE, **plus a CLI (terminal)** and a **web preview** ([app.kiro.dev](https://app.kiro.dev))
+- **Foundation:** Built on Code OSS (the open-source core of VS Code), powered by **Amazon Bedrock**
+- **Models:** A default **"Auto"** agent blends frontier + specialized models; you can also pin a specific
+  model (Claude Sonnet 4.5/4.6, Opus 4.5–4.8, Haiku 4.5, or open-weight models like Qwen3 Coder, DeepSeek, MiniMax)
 - **Philosophy:** Spec-driven development, not vibe coding
-- **Launch:** July 14, 2025 (public preview)
+- **Timeline:** Public preview **July 14, 2025** → **general availability November 17, 2025** → **IDE 1.0 June 25, 2026**
 - **Developer:** AWS (Amazon Web Services)
 
 ### What Kiro Does
@@ -38,16 +65,47 @@ Without these files, you have no ground truth. Stop and ask for them.
    - `requirements.md` – User stories with EARS notation
    - `design.md` – Technical architecture and design decisions
    - `tasks.md` – Implementation plan with discrete tasks
-3. **Implements code** from specs (either directly or via agents like you)
+3. **Implements code** from specs (either directly or via agents like you), and can run
+   **multiple tasks in parallel** using subagents
 4. **Automates documentation and testing** via agent hooks
 5. **Enforces coding standards** via steering rules
+6. **Verifies correctness** with property-based testing against the spec (added at GA)
 
 ### What Kiro Is NOT
 
-- **Not a compiler:** It's an IDE with AI agents
-- **Not a CLI tool:** It's a full graphical IDE (based on VS Code)
+- **Not a compiler:** It's an environment with AI agents
+- **Not *only* a graphical IDE anymore:** since GA there is also a **Kiro CLI** for the terminal and a
+  **Kiro Web** preview — but the IDE (a VS Code / Code OSS fork) is still the primary surface
 - **Not vibe coding:** Everything traces back to structured specs
-- **Not limited to AWS:** No AWS account required to use it
+- **Not gated behind an AWS account for individuals:** you can sign in with a social login or
+  **AWS Builder ID**. (Teams *do* use AWS IAM Identity Center, Okta, or Microsoft Entra ID.)
+
+---
+
+## 💳 Pricing (current as of June 2026)
+
+Kiro left its free-during-preview phase at GA and now uses a **credit-based** model. A *credit* is a unit
+of work: a simple prompt can cost **less than 1 credit** (billed in 0.01 increments), while a complex
+action like executing a spec task typically costs more.
+
+> ℹ️ **History worth teaching:** Kiro originally metered usage as separate **"vibe requests"** (one chat
+> interaction) and **"spec requests"** (executing one spec task), where spec requests cost more. After
+> community feedback this was **unified into a single credit pool** that charges fractionally by
+> complexity — simpler and more predictable.
+
+| Plan | Price / month | Monthly credits |
+|---|---|---|
+| **Free** | $0 | 50 |
+| **Pro** | $20 | 1,000 |
+| **Pro+** | $40 | 2,000 |
+| **Pro Max** | $100 | 5,000 |
+| **Power** | $200 | 10,000 |
+
+- **Overage** (paid plans only, opt-in): **$0.04 per extra credit**, billed at month-end.
+- New individual subscribers get a sign-up bonus (e.g. **$20 credit** on first upgrade / bonus credits).
+- **AWS GovCloud (US)** pricing is ~20% higher and has **no Free tier**.
+
+> Pricing evolves — always confirm current numbers at **[kiro.dev/pricing](https://kiro.dev/pricing/)**.
 
 ---
 
@@ -69,6 +127,9 @@ Without these files, you have no ground truth. Stop and ask for them.
 - `design.md` with architecture (sequence diagrams, component design)
 - `tasks.md` with implementation steps
 
+> 💡 Kiro 2026 adds a **Quick Plan** workflow and **design-first feature specs** for faster spec creation,
+> plus dedicated **bugfix workflows** — but the requirements → design → tasks backbone is unchanged.
+
 ### Phase 2: Human Reviews and Refines
 
 - Reviews generated specs
@@ -79,13 +140,14 @@ Without these files, you have no ground truth. Stop and ask for them.
 ### Phase 3: Implementation
 
 - Kiro or AI agents (like you) implement from `tasks.md`
+- Independent tasks can run **in parallel** via subagents / concurrent spec execution
 - Every method traces back to requirements
 - Tests written for every requirement
 - Agent hooks auto-generate docs
 
 ### Phase 4: Validation
 
-- All tests pass
+- All tests pass (Kiro can also run **property-based tests** to check code against the spec)
 - Architecture constraints respected
 - Requirements traced
 - System deployed
@@ -149,7 +211,7 @@ Contains:
 - Task execution order suggestions
 
 **What this means for you:**
-- Implement tasks in order
+- Implement tasks in order (or in parallel where they are independent)
 - Do not skip required tasks
 - Optional tasks can be deferred but remain visible
 - Each task should trace to requirements
@@ -169,7 +231,8 @@ This provides context from all three spec files to guide implementation.
 
 ### 2. Agent Hooks (Event-Driven Automation)
 
-Kiro can automate repetitive tasks via hooks:
+Kiro can automate repetitive tasks via hooks. As of 2026 you can describe a hook in **natural language**
+and Kiro wires it up, including **pre/post tool-use** triggers.
 
 **Example Hook: Documentation Sync**
 ```
@@ -185,46 +248,41 @@ Action:
 - Tests may be auto-generated
 - You focus on implementation, not boilerplate
 
-### 3. Steering Rules (AGENTS.md)
+### 3. Steering Rules (Persistent Context)
 
-Kiro projects may include steering files that define:
-- Coding standards
-- Architectural patterns
-- Best practices
-- Naming conventions
+Steering files give Kiro durable, project-wide context (coding standards, architecture patterns, naming
+conventions). They live as Markdown:
 
-**Location:**
-- Global: `~/.kiro/steering/AGENTS.md`
-- Project: `AGENTS.md` in workspace root
+- **Workspace:** `.kiro/steering/*.md` (commonly `product.md`, `tech.md`, `structure.md`)
+- **Global:** `~/.kiro/steering/`
+- Kiro also recognizes a root **`AGENTS.md`** as a steering/standards file (shared with other agents).
 
 **Why this matters to you:**
-- Follow standards defined in AGENTS.md
+- Follow standards defined in steering files / `AGENTS.md`
 - Architectural patterns are enforced
-- Consistency across codebase
+- Consistency across the codebase
 
-### 4. Diagnostics Tool
+### 4. Subagents & Parallel Execution
 
-Kiro provides:
-- Syntax errors
-- Type errors
-- Semantic errors
+Kiro can **run multiple tasks at once** and delegate to specialized **subagents**, each with its own
+context window (so the main agent's context stays clean). Built-ins include a **context-gatherer** for
+exploring a project and a **general-purpose** agent for parallelizing work. (This replaced the old
+"one task at a time" limitation.)
 
-**Why this matters to you:**
-- Kiro catches errors early
-- Lint violations reduced
-- Type safety enforced
+### 5. Diagnostics Tool
 
-### 5. Multimodal Development
+Kiro surfaces syntax, type, and semantic errors early, reducing lint violations and enforcing type safety.
 
-Kiro can understand:
-- Whiteboard sketches → code
-- Architecture diagrams → component design
-- UML diagrams → class structures
+### 6. Multimodal Development
 
-**Why this matters to you:**
-- Design artifacts are machine-readable
-- Visual specifications translate directly to code
-- Traceability from diagram to implementation
+Kiro can turn **whiteboard sketches, architecture diagrams, and UML** into code, components, and class
+structures — so visual design artifacts translate directly to implementation with traceability.
+
+### 7. Web Tools, Checkpoints & Permissions (2026)
+
+- **Web search / fetch in chat** — look up current docs and library versions without leaving Kiro.
+- **Checkpoints** — revert to a previous agent execution state if a run goes sideways.
+- **Capability-based permissions** (IDE 1.0) — you control exactly which actions an agent may take.
 
 ---
 
@@ -504,7 +562,7 @@ Do not bypass guardrails. Do not disable analyzers. Do not work around constrain
 Kiro can:
 - Generate commit messages via AI
 - Avoid writing to `.git` directories
-- Integrate with PR workflows
+- Integrate with PR workflows (Kiro Web can even hand off a task that finishes as a pull request)
 
 **Your workflow:**
 - Commit code referencing requirement IDs: `feat: implement REQ-025 pixel-to-square translation`
@@ -525,10 +583,11 @@ Kiro works with:
 
 ### Kiro + MCP Servers
 
-Kiro supports Model Context Protocol:
+Kiro supports the Model Context Protocol:
 - Remote MCP servers (Streamable HTTP)
 - Local MCP servers (stdio)
 - One-click installation
+- **Enterprise MCP registry governance** — admins can allow-list approved servers org-wide (2026)
 
 **Your workflow:**
 - Use MCP tools scoped to your subsystem
@@ -631,7 +690,7 @@ namespace MateMate.Technical.InputAdapter
   /// REQ-023: Capture mouse click events.
   /// REQ-025: Translate pixel coordinates to board coordinates.
   /// REQ-027: Emit InputEvent objects.
-  /// REsummary>
+  /// </summary>
   public class InputAdapter : IInputAdapter
   {
     private readonly IEventBus _eventBus;
@@ -732,14 +791,31 @@ Follow the specs. Raise issues when boundaries feel wrong. Let humans decide. Bu
 
 ---
 
+## Presentation Material
+
+This repo doubles as a teaching kit about Kiro:
+
+- **[`Kiro-fuer-Jugendliche.md`](Kiro-fuer-Jugendliche.md)** — bilingual (DE headings / EN terms) explainer
+  written for a teenager / student audience; it mirrors the slide deck.
+- **`Kiro_IDE_Orchestrator_2026_Jugend.pptx`** — youth presentation deck, current as of June 2026.
+- `Kiro_IDE_Orchestrator_NEW_FH.pptx` / `Kiro_IDE_Orchestrator_Old_FH.pptx` — original FH Technikum Wien
+  software-architecture evaluation decks (November 2025), kept for reference.
+
+---
+
 ## Resources
 
-**Official Kiro Documentation:**
-- Website: https://kiro.dev/
-- Docs: https://kiro.dev/docs
-- Changelog: https://kiro.dev/docs/changelog
+**Official Kiro (primary sources):**
+- Website: <https://kiro.dev/>
+- Docs: <https://kiro.dev/docs>
+- IDE Changelog: <https://kiro.dev/changelog/ide/> *(the old `kiro.dev/docs/changelog` link now 404s)*
+- Pricing: <https://kiro.dev/pricing/>
+- FAQ: <https://kiro.dev/faq/>
+- Kiro Web (preview): <https://app.kiro.dev>
+- General availability announcement (Nov 17, 2025): <https://kiro.dev/blog/general-availability/>
+- Pricing & "Auto" agent announcement: <https://kiro.dev/blog/new-pricing-plans-and-auto/>
 
-**MateMate Project Files:**
+**MateMate Project Files** (the spec-driven case study this contract was written for):
 - `/SDD/KiroForHumans.md` – User guide for Kiro
 - `/SDD/README.md` – Full workflow guide
 - `/SDD/CLAUDE.md` – Claude Code agent contract (parallel to this file)
@@ -747,4 +823,6 @@ Follow the specs. Raise issues when boundaries feel wrong. Let humans decide. Bu
 
 ---
 
-*Last updated: November 2025 based on official AWS Kiro documentation*
+*Last updated: June 2026, based on official AWS Kiro documentation, the GA announcement (Nov 17, 2025),
+and the IDE changelog through IDE 1.0 (June 25, 2026). Pricing and model availability change often —
+verify current details at [kiro.dev](https://kiro.dev/).*
